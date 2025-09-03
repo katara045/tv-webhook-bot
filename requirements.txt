@@ -1,5 +1,3 @@
 fastapi
 uvicorn
-ccxt
-python-dotenv
-requests
+python-telegram-bot
