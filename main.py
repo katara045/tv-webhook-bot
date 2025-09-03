@@ -1,5 +1,11 @@
 import os, json, requests
+from fastapi import FastAPI, Request
 
+app = FastAPI()   # ✅ FastAPI 앱 정의 추가
+
+@app.get("/")
+def root():
+    return {"ok": True, "msg": "bot running"}
 
 @app.get('/')
 def root():
