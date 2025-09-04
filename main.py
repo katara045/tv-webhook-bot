@@ -15,7 +15,7 @@ EXCHANGE_NAME = os.getenv("EXCHANGE", "gateio")
 LEVERAGE = int(os.getenv("LEVERAGE", 3))
 MARKET_TYPE = os.getenv("MARKET_TYPE", "future")  # spot / future
 PORT = int(os.getenv("PORT", 8000))
-SANDBOX = os.getenv("SANDBOX", "false").lower() == "true"
+SANDBOX = os.getenv("SANDBOX", "true").lower() == "true"
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
