@@ -59,17 +59,27 @@ def send_telegram(msg):
 def entry(symbol, side, step):
     """분할 매수 진입"""
     ratio = 1 / SPLIT
-    invest = CAPITAL * ratio * LEVERAGE
+    invest = CAPITAL * ratio * LEVERAGE  # USDT 기준 투자 금액
 
     price = exchange.fetch_ticker(symbol)["last"]
-    amount = invest / price
+    amount = invest / price  # BTC 수량
 
-    order = exchange.create_order(
-        symbol=symbol,
-        type="market",
-        side=side,
-        amount=amount
-    )
+    # Gateio 마켓 매수는 quote 단위가 안전하므로 따로 분기
+    if side == "buy":
+        order = exchange.create_order(
+            symbol=symbol,
+            type="market",
+            side=side,
+            amount=invest,   # <-- 투자 금액(USDT)
+            params={"cost": invest}  # quote 단위 지정
+        )
+    else:
+        order = exchange.create_order(
+            symbol=symbol,
+            type="market",
+            side=side,
+            amount=amount    # 매도는 수량 그대로
+        )
 
     pos = open_positions.get(symbol, {"side": side, "amount": 0, "avg_price": 0, "tp_order": None})
 
@@ -105,7 +115,6 @@ def entry(symbol, side, step):
     send_telegram(msg)
 
     return {"ok": True, "order": order, "tp_order": tp_order}
-
 
 def close(symbol):
     """포지션 강제 종료"""
